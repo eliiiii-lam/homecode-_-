@@ -22,10 +22,12 @@ public class rubix extends LinearOpMode {
         Pose2d initialPose = new Pose2d(0, 61.5, Math.toRadians(270));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
+        Arm arm = new Arm(hardwareMap);
         resetRuntime();
 
         TrajectoryActionBuilder spec1 = drive.actionBuilder(initialPose)
-                .splineToLinearHeading(new Pose2d(-8,34, Math.toRadians(270)), Math.toRadians(270));
+                .splineToLinearHeading(new Pose2d(-8,34, Math.toRadians(270)), Math.toRadians(270))
+                .afterTime(0.1,arm.SetPosition(-200));
         TrajectoryActionBuilder spec2 =  spec1.endTrajectory().fresh()
                 .strafeToLinearHeading(new Vector2d(22,40), Math.toRadians(270));//allign with first sample
         TrajectoryActionBuilder spec3 =  spec2.endTrajectory().fresh()
@@ -74,10 +76,10 @@ public class rubix extends LinearOpMode {
         fwgo2 = spec2.build();
         Action fwgo3;
         fwgo3 = spec3.build();
-    Action fwgo4;
-            fwgo4 = spec4.build();
+        Action fwgo4;
+        fwgo4 = spec4.build();
         Action fwgo5;
-            fwgo5 = spec5.build();
+        fwgo5 = spec5.build();
         Action fwgo6;
         fwgo6 = spec6.build();
         Action fwgo7;

@@ -6,37 +6,49 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
+import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Auto.mechs;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
-@Autonomous(name = "ActionTester")
+@Autonomous(name = "Action Tester")
 public class ActionTester extends LinearOpMode {
     @Override
     public void runOpMode() {
-        Pose2d initialPose = new Pose2d(0, -63.25, Math.toRadians(90));
+        //Start position for RED
+        Pose2d initialPose = new Pose2d(0, 61.5, Math.toRadians(270));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
-
-        mechs Mechs = new mechs(hardwareMap);
-
-        Actions.runBlocking(new ParallelAction(
-///////////////////////////////////////////////////////on init
+        Arm arm = new Arm(hardwareMap);
+        //resetRuntime();
 
 
-                ///////////////////////////////////////////////////////on init
-        ));
         waitForStart();
-        Actions.runBlocking(new ParallelAction(
-               Mechs.armDown()
-        ));
+        TrajectoryActionBuilder spec1 = drive.actionBuilder(initialPose)
+                .splineToLinearHeading(new Pose2d(0,50, Math.toRadians(270)), Math.toRadians(270))
+                .afterTime(0.1,arm.SetPosition(-200));
+
+
+
+
+        if (isStopRequested()) return;
+
+
+
+
+
         Actions.runBlocking(
-                new SleepAction(3)
+                new ParallelAction(
+                spec1.build(),
+                        arm.UpdatePID()
+                )
+
+
+
+
         );
     }
-
 }

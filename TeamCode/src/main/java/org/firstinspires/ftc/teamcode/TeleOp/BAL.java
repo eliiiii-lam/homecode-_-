@@ -23,7 +23,7 @@ public class BAL extends LinearOpMode {
     public static double f = 0.08;
     public static int target = 0;
 
-    private final double ticks_in_degrees = 1425.1/360.0; //change the 360 back to 180 if no work
+    private final double ticks_in_degrees = (1425.1/360.0 ) /2; //change the 360 back to 180 if no work
 
     private DcMotorEx motor ;
 
@@ -54,7 +54,7 @@ public class BAL extends LinearOpMode {
         controller = new PIDController(p,i,d);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        motor = hardwareMap.get(DcMotorEx.class, "motor");
+        motor = hardwareMap.get(DcMotorEx.class, "Arm");
 
         Servo outY = hardwareMap.servo.get("outY");
         Servo outRot = hardwareMap.servo.get("outRot");
@@ -184,9 +184,9 @@ public class BAL extends LinearOpMode {
 
 
             if (gamepad2.y){
-            outClaw.setPosition(0.72);
-            sleep(100);
-            inClaw.setPosition(0.43);
+                outClaw.setPosition(0.72);
+                sleep(100);
+                inClaw.setPosition(0.43);
                 outY.setPosition(0.4);
 
                 target = -500;

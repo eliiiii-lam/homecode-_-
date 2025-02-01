@@ -17,7 +17,7 @@ public class kooky_PID extends OpMode {
     public static double f = 0.08;
     public static int target;
 
-    private final double ticks_in_degrees = 1425.1/360.0; //change the 360 back to 180 if no work
+    private final double ticks_in_degrees = (1425.1/360.0) / 2; //change the 360 back to 180 if no work
 
     private DcMotorEx motor ;
 
@@ -27,7 +27,7 @@ public class kooky_PID extends OpMode {
         controller = new PIDController(p,i,d);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        motor = hardwareMap.get(DcMotorEx.class, "motor");
+        motor = hardwareMap.get(DcMotorEx.class, "Arm");
 
 
     }
