@@ -43,12 +43,13 @@ public class BAL extends LinearOpMode {
 
         DcMotor uppies = hardwareMap.dcMotor.get("uppies");
 
-        Servo link = hardwareMap.servo.get("link");
+        Servo linkL = hardwareMap.servo.get("linkL");
+        Servo linkR = hardwareMap.servo.get("linkR");
 
         Servo inY = hardwareMap.servo.get("inY");
         Servo inX = hardwareMap.servo.get("inX");
         Servo inClaw = hardwareMap.servo.get("inClaw");
-        Servo inmainPiv = hardwareMap.servo.get("inmainPiv");
+        Servo inPiv = hardwareMap.servo.get("inPiv");
 
 
         controller = new PIDController(p,i,d);
@@ -56,11 +57,11 @@ public class BAL extends LinearOpMode {
 
         motor = hardwareMap.get(DcMotorEx.class, "Arm");
 
-        Servo outY = hardwareMap.servo.get("outY");
         Servo outRot = hardwareMap.servo.get("outRot");
         Servo outClaw = hardwareMap.servo.get("outClaw");
 
-        link.setDirection(Servo.Direction.REVERSE);
+        linkL.setDirection(Servo.Direction.REVERSE);
+        outRot.setDirection(Servo.Direction.REVERSE);
 
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -110,14 +111,17 @@ public class BAL extends LinearOpMode {
                 inX.setPosition(0.5); // Set to neutral if joystick is idle
             }
             if (gamepad2.a) {
-                inmainPiv.setPosition(0.5);
-                link.setPosition(0.23);
-                inY.setPosition(0.45);//lower claw to "observe mode"
+                linkL.setPosition(0.25);
+                linkR.setPosition(0.23);
+               // inPiv.setPosition(0.5);
+               // inY.setPosition(0.45);//lower claw to "observe mode"
             }
 
             if (gamepad2.b){
-                link.setPosition(0.62); // bring intake back
-                inY.setPosition(0.55);//bring claw back
+                linkL.setPosition(0.64); // bring intake back
+                linkR.setPosition(0.62); // bring intake back
+                //inPiv.setPosition(0.6);
+                //inY.setPosition(0.55);//bring claw back
             }
 
 
@@ -142,8 +146,7 @@ public class BAL extends LinearOpMode {
             double power = pid + ff;
 
             if (gamepad2.dpad_down){
-                outY.setPosition(0.4);
-                outRot.setPosition(0.27);
+                outRot.setPosition(0.5);
                 target = -25;
             }
 
@@ -151,45 +154,30 @@ public class BAL extends LinearOpMode {
             if (gamepad2.dpad_left){
                 outClaw.setPosition(0.72);
                 sleep(450);
-                target = -400;
-                outY.setPosition(0.6);
-                outRot.setPosition(0.95);
+                target = -200;
+                outRot.setPosition(0.8);
             }
 
             if (gamepad2.dpad_up){
                 outClaw.setPosition(0.72);
                 target = -600; // changed
-                outY.setPosition(0.63);
                 outRot.setPosition(0.95);
             }
 
             if (gamepad2.dpad_right){
                 outClaw.setPosition(0.72);
                 target = -690; // changed
-                outY.setPosition(0.63);
                 outRot.setPosition(0.95);
             }
 
             if (gamepad2.x){
-                link.setPosition(0.35); // Set to neutral if joystick is idle
-                inmainPiv.setPosition(0.5);
-                inY.setPosition(0.95);//bring claw back
-                outClaw.setPosition(0.5);
 
-                outY.setPosition(1);
-                outRot.setPosition(0.95);
-                target = -555;
 
             }
 
 
             if (gamepad2.y){
-                outClaw.setPosition(0.72);
-                sleep(100);
-                inClaw.setPosition(0.43);
-                outY.setPosition(0.4);
 
-                target = -500;
 
 
             }
