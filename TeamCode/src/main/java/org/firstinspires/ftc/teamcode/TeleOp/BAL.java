@@ -21,7 +21,7 @@ public class BAL extends LinearOpMode {
     private PIDController controller;
     public static double p = 0.0096, i = 0.03, d = 0.000525;
     public static double f = 0.08;
-    public static int target = 0;
+    public  int target = 0; //put a static here if no work
 
     private final double ticks_in_degrees = (1425.1/360.0 ) /2; //change the 360 back to 180 if no work
 
