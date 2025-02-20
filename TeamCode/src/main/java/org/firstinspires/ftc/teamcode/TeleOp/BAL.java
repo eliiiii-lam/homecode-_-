@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -21,9 +22,10 @@ public class BAL extends LinearOpMode {
     private PIDController controller;
     public static double p = 0.0096, i = 0.03, d = 0.000525;
     public static double f = 0.08;
-    public  int target = 0; //put a static here if no work
+    public static int target;
+    //public int target;
 
-    private final double ticks_in_degrees = (1425.1/360.0 ) /2; //change the 360 back to 180 if no work
+    private final double ticks_in_degrees = 1425.1/360.0; //change the 360 back to 180 if no work
 
     private DcMotorEx motor ;
 
@@ -41,16 +43,21 @@ public class BAL extends LinearOpMode {
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("fR");
         DcMotor backRightMotor = hardwareMap.dcMotor.get("bR");
 
+        //Drivetrain drivetrain = new Drivetrain(hardwareMap);
+        //drivetrain.setForwardspeed(100);
+
         DcMotor uppies = hardwareMap.dcMotor.get("uppies");
 
         Servo linkL = hardwareMap.servo.get("linkL");
         Servo linkR = hardwareMap.servo.get("linkR");
+
 
         Servo inY = hardwareMap.servo.get("inY");
         Servo inX = hardwareMap.servo.get("inX");
         Servo inClaw = hardwareMap.servo.get("inClaw");
         Servo inPiv = hardwareMap.servo.get("inPiv");
 
+        //set target to zero here
 
         controller = new PIDController(p,i,d);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -60,11 +67,12 @@ public class BAL extends LinearOpMode {
         Servo outRot = hardwareMap.servo.get("outRot");
         Servo outClaw = hardwareMap.servo.get("outClaw");
 
-        linkL.setDirection(Servo.Direction.REVERSE);
-        outRot.setDirection(Servo.Direction.REVERSE);
+        linkR.setDirection(Servo.Direction.REVERSE);
 
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        outRot.setDirection(Servo.Direction.REVERSE);
 
 
         // Retrieve the IMU from the hardware map
@@ -111,18 +119,22 @@ public class BAL extends LinearOpMode {
                 inX.setPosition(0.5); // Set to neutral if joystick is idle
             }
             if (gamepad2.a) {
+                inPiv.setPosition(0.5);
+                inY.setPosition(0.45);//lower claw to "observe mode"
                 linkL.setPosition(0.25);
-                linkR.setPosition(0.23);
-               // inPiv.setPosition(0.5);
-               // inY.setPosition(0.45);//lower claw to "observe mode"
+                linkR.setPosition(0.25);
             }
 
             if (gamepad2.b){
-                linkL.setPosition(0.64); // bring intake back
-                linkR.setPosition(0.62); // bring intake back
-                //inPiv.setPosition(0.6);
-                //inY.setPosition(0.55);//bring claw back
+                inY.setPosition(0.7);//bring claw back
+                inPiv.setPosition(0.2);
+                linkL.setPosition(0.53);
+                linkR.setPosition(0.3);
+
             }
+
+
+
 
 
 
@@ -146,28 +158,28 @@ public class BAL extends LinearOpMode {
             double power = pid + ff;
 
             if (gamepad2.dpad_down){
-                outRot.setPosition(0.5);
-                target = -25;
+                outRot.setPosition(0.32);
+                target = -125;
             }
 
 
             if (gamepad2.dpad_left){
-                outClaw.setPosition(0.72);
+                outClaw.setPosition(0.65);
                 sleep(450);
-                target = -200;
-                outRot.setPosition(0.8);
+                target = -500;
+                outRot.setPosition(0.97);
             }
 
             if (gamepad2.dpad_up){
-                outClaw.setPosition(0.72);
-                target = -600; // changed
-                outRot.setPosition(0.95);
+                outClaw.setPosition(0.65);
+                target = -875; // changed
+                outRot.setPosition(0.97);
             }
 
             if (gamepad2.dpad_right){
-                outClaw.setPosition(0.72);
+                outClaw.setPosition(0.65);
                 target = -690; // changed
-                outRot.setPosition(0.95);
+                outRot.setPosition(0.97);
             }
 
             if (gamepad2.x){
@@ -177,8 +189,6 @@ public class BAL extends LinearOpMode {
 
 
             if (gamepad2.y){
-
-
 
             }
 

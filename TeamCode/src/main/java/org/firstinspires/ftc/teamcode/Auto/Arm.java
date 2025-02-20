@@ -17,12 +17,11 @@ public class Arm {
     public DcMotorEx Arm;
     public int setPosition;
 
-    Servo link;
+    Servo linkL;
+    Servo linkR;
     Servo inY;
     Servo inX;
     Servo inClaw;
-    Servo inmainPiv;
-    Servo outY;
     Servo outRot;
     Servo outClaw;
 
@@ -32,18 +31,22 @@ public class Arm {
         Arm = hardwareMap.get(DcMotorEx.class, "Arm");
         Arm.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        link = hardwareMap.servo.get("link");
+        linkL = hardwareMap.servo.get("linkL");
+        linkR = hardwareMap.servo.get("linkR");
+
         inY = hardwareMap.servo.get("inY");
         inX = hardwareMap.servo.get("inX");
         inClaw = hardwareMap.servo.get("inClaw");
-        inmainPiv = hardwareMap.servo.get("inmainPiv");
-        outY = hardwareMap.servo.get("outY");
         outRot = hardwareMap.servo.get("outRot");
         outClaw = hardwareMap.servo.get("outClaw");
 
-        link.setDirection(Servo.Direction.REVERSE);
+        linkR.setDirection(Servo.Direction.REVERSE);
+        outRot.setDirection(Servo.Direction.REVERSE);
+
 
     }
+
+// use public void
 
     public class updatePID implements Action {
         public updatePID(){
@@ -72,8 +75,7 @@ public class Arm {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
 
-            outY.setPosition(0.4);
-            outRot.setPosition(0.27);
+            outRot.setPosition(0.32);
 
             return false;
         }
@@ -86,8 +88,7 @@ public class Arm {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
 
-            outY.setPosition(0.55);
-            outRot.setPosition(0.95);
+            outRot.setPosition(0.97);
             outClaw.setPosition(0.72);
 
 
@@ -97,6 +98,7 @@ public class Arm {
     public Action armUp() {
         return new Arm.armUp();
     }
+
 //////////////////////////////////////////////////////////////////////////////////////
     public class openClaw implements Action {
         @Override
@@ -118,7 +120,8 @@ public class Arm {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
 
-            link.setPosition(0.62);
+            linkL.setPosition(0.5);
+            linkR.setPosition(0.5);
 
 
 

@@ -89,12 +89,6 @@ public class rubix_alt extends LinearOpMode {
 
 
 
-
-
-
-
-
-
         Action TrajectoryClose = spec1.endTrajectory().build();
 
 
